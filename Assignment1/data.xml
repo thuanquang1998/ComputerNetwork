@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SERVER_ACCEPT>
+	<PEER>
+		<USER_NAME>huong</USER_NAME>
+		<PASSWORD>1234</PASSWORD>
+	</PEER>
+	<PEER>
+		<USER_NAME>thihoa</USER_NAME>
+		<PASSWORD>1234</PASSWORD>
+	</PEER>
+	<PEER>
+		<USER_NAME>thaihoa</USER_NAME>
+		<PASSWORD>1234</PASSWORD>
+	</PEER>
+	<PEER>
+		<USER_NAME>that</USER_NAME>
+		<PASSWORD>1234</PASSWORD>
+	</PEER>
+</SERVER_ACCEPT>
