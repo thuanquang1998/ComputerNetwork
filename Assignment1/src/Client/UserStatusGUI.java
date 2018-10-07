@@ -3,6 +3,7 @@ package Client;
 import javax.swing.*;
 
 import Protocol.XMLProtocol;
+import Server.ServerForm;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

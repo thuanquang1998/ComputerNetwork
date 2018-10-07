@@ -13,7 +13,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ServerThread extends Thread{
-	private DefaultTableModel table;
+	private DefaultTableModel table; //chứa danh sách các user
+	private DefaultTableModel tableonl;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private ServerForm form;
@@ -22,10 +23,10 @@ public class ServerThread extends Thread{
 	
 	public ServerThread(Socket _socket, Server _server){
 		this.socket = _socket;
-		//this.server = _server;
 		this.ID = socket.getPort();
 		this.table = _server.table;
 		this.form = _server.form;
+		this.tableonl = _server.tableonl;
 		
 	}
 	private boolean checkUserName(String userName){
@@ -82,6 +83,7 @@ public class ServerThread extends Thread{
 			input = new DataInputStream(socket.getInputStream());
 			long st = System.currentTimeMillis();
 			while(true){
+				//lấy thông điệp từ client
 				String message = input.readUTF();
 				long end = System.currentTimeMillis();
 			//	System.out.println(message);
@@ -96,7 +98,10 @@ public class ServerThread extends Thread{
 							
 							String[] dataRow ={userName,pass,socket.getInetAddress().toString(),""+ID+""};
 							table.addRow(dataRow);
+							//tableonl.addRow(dataRow);
 
+							//form.UpdateJList(tableonl);
+							//Gửi thông điệp về Client bằng protocol
 							sendMessage(new XMLProtocol().registerAccept(table));
 				
 						}
@@ -108,23 +113,31 @@ public class ServerThread extends Thread{
 					}
 					else if(doc.getDocumentElement().getNodeName().equals("PEER_KEEP_ALIVE")){
 						if(!doc.getElementsByTagName("STATUS").item(0).getTextContent().equals("ALIVE")){
-							//System.out.println("Co vo day ko");
+							String userName = doc.getElementsByTagName("USER_NAME").item(0).getTextContent();
+							int k = 0;
+							for (int i = 0; i < tableonl.getRowCount(); i++){
+								if (tableonl.getValueAt(i,1) == userName){
+									tableonl.removeRow(i);
+									break;
+								}
+							}
+
+
 							this.remote(doc.getElementsByTagName("USER_NAME").item(0).getTextContent());
 							this.close();
 							this.stop();
 						}
 						else sendMessage(new XMLProtocol().registerAccept(table));
 					}
+					//check tài khoản đăng nhập
 					else if(doc.getDocumentElement().getNodeName().equals("LOGIN")){
 						String userName = doc.getElementsByTagName("USER_NAME").item(0).getTextContent();
 						String pass = doc.getElementsByTagName("PASSWORD").item(0).getTextContent();
 						String ip = doc.getElementsByTagName("IP").item(0).getTextContent();
 						String port = doc.getElementsByTagName("PORT").item(0).getTextContent();
+						//Lấy index của userName trên table
 						int row = checkLogin(userName,pass);
 						if(row >= 0){
-							
-							
-							
 							table.setValueAt(ip, row, 2);
 							table.setValueAt(port, row, 3);
 							sendMessage(new XMLProtocol().registerAccept(table));

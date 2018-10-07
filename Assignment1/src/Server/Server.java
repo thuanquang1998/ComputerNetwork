@@ -6,21 +6,25 @@ import java.net.*;
 
 public class Server implements Runnable{
 	protected DefaultTableModel table;
+	protected DefaultTableModel tableonl;
 	protected ServerForm form;
 	private ServerSocket server;
 	private Thread thread = null;
-	private int port = 6696;
+	private int port = 6996;
 
 	
 	public Server(ServerForm form){
 		this.form = form;
 		this.table= form.table;
+		this.tableonl = form.tableonl;
 		try{
 			server = new ServerSocket(port);
+			//Lấy IP máy
 			form.txtArea.append("Server started. IP: "+InetAddress.getLocalHost() +", Port: "+ server.getLocalPort());
 			Start();
 		}
 		catch(Exception e){
+			//khởi động lại khi gặp lỗi
 			form.RetryStart(0);
 			//System.err.println(e.getMessage());
 		}

@@ -1,17 +1,9 @@
 package Server;
 
-import java.awt.EventQueue;
+import java.awt.*;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.SpringLayout;
-import javax.swing.JLabel;
+import javax.swing.*;
 
-import java.awt.Font;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,6 +31,9 @@ public class ServerForm extends JFrame{
 	private Server server;
 	private File file;
 	protected DefaultTableModel table ;
+    protected DefaultTableModel tableonl ;
+	JList<String> list;
+	JScrollPane scrollPane;
 
 	/**
 	 * Launch the application.
@@ -74,11 +69,12 @@ public class ServerForm extends JFrame{
 		table.addColumn("port");
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 508, 393);
+		frame.setBounds(100, 100, 600, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
-		
+
+
 		JLabel lblServer = new JLabel("SERVER");
 		springLayout.putConstraint(SpringLayout.NORTH, lblServer, 23, SpringLayout.NORTH, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.WEST, lblServer, 194, SpringLayout.WEST, frame.getContentPane());
@@ -158,19 +154,49 @@ public class ServerForm extends JFrame{
 		springLayout.putConstraint(SpringLayout.EAST, btnStart, 83, SpringLayout.EAST, btnBrowse);
 		btnStart.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.getContentPane().add(btnStart);
-		
+
+
+
 		txtArea = new JTextArea();
 		springLayout.putConstraint(SpringLayout.SOUTH, btnStart, -29, SpringLayout.NORTH, txtArea);
 		springLayout.putConstraint(SpringLayout.NORTH, txtArea, 29, SpringLayout.SOUTH, btnBrowse);
 		springLayout.putConstraint(SpringLayout.WEST, txtArea, 27, SpringLayout.WEST, frame.getContentPane());
 		springLayout.putConstraint(SpringLayout.SOUTH, txtArea, 200, SpringLayout.SOUTH, lblDatafile);
-		springLayout.putConstraint(SpringLayout.EAST, txtArea, 0, SpringLayout.EAST, btnStart);
+		springLayout.putConstraint(SpringLayout.EAST, txtArea, -100, SpringLayout.EAST, btnStart);
 		frame.getContentPane().add(txtArea);
+
+        scrollPane = new JScrollPane();
+        springLayout.putConstraint(SpringLayout.NORTH, scrollPane, -150, SpringLayout.SOUTH, txtArea);
+        springLayout.putConstraint(SpringLayout.WEST, scrollPane, -106, SpringLayout.EAST, frame.getContentPane());
+        springLayout.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, btnStart);
+        scrollPane.setSize(new Dimension(200, 180));
+        //springLayout.putConstraint(SpringLayout.SOUTH, scrollPane, -45, SpringLayout.SOUTH, getContentPane());
+        frame.getContentPane().add(scrollPane);
+
+        list = new JList<String>();
+        list.setSize(new Dimension(106, 142));
+        list.setEnabled(false);
+        scrollPane.setViewportView(list);
 	}
 	public void RetryStart(int port){
 		if(server != null)
 			server.Stop();
 		server = new Server(this,port);
+	}
+	public void UpdateJList(DefaultTableModel ta){
+		try{
+			DefaultListModel<String> tmp = new DefaultListModel<String>();
+
+			list.setModel(tmp);
+
+			for (int i = 0; i < ta.getRowCount(); i++){
+				tmp.addElement(ta.getValueAt(i, 0).toString());
+			}
+		}
+		catch(Exception e){
+			System.out.println("Cann't take list user");
+		}
+
 	}
 	 private void StartMouseClicked(java.awt.event.MouseEvent evt) {
 	        server = new Server(this);
