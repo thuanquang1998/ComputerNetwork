@@ -81,6 +81,7 @@ public class UserStatusGUI extends JFrame{
 		springLayout.putConstraint(SpringLayout.NORTH, lblPassword, 0, SpringLayout.NORTH, lblUserName);
 		springLayout.putConstraint(SpringLayout.EAST, lblPassword, 0, SpringLayout.EAST, lblHostPort);
 		getContentPane().add(lblPassword);
+
 		
 		txtusername = new JTextField();
 		txtusername.setText("gg");
@@ -97,6 +98,12 @@ public class UserStatusGUI extends JFrame{
 		springLayout.putConstraint(SpringLayout.EAST, pwdTxtpass, 0, SpringLayout.EAST, txthostport);
 		getContentPane().add(pwdTxtpass);
 		pwdTxtpass.setText("c");
+
+		JLabel listuser_onl = new JLabel("User Online");
+		springLayout.putConstraint(SpringLayout.SOUTH, listuser_onl, 20, SpringLayout.SOUTH, pwdTxtpass);
+		springLayout.putConstraint(SpringLayout.WEST, listuser_onl, 5, SpringLayout.WEST, pwdTxtpass);
+		getContentPane().add(listuser_onl);
+
 		btnConnect = new JButton("Connect");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -131,6 +138,8 @@ public class UserStatusGUI extends JFrame{
 		springLayout.putConstraint(SpringLayout.WEST, btnLogin, 0, SpringLayout.WEST, lblHostName);
 		springLayout.putConstraint(SpringLayout.EAST, btnLogin, 0, SpringLayout.EAST, btnConnect);
 		getContentPane().add(btnLogin);
+
+
 		
 		scrollPane = new JScrollPane();
 		springLayout.putConstraint(SpringLayout.NORTH, scrollPane, -213, SpringLayout.SOUTH, getContentPane());
@@ -307,7 +316,13 @@ public class UserStatusGUI extends JFrame{
 		if (!list.isSelectionEmpty()){
 			try{
 				//chọn client trong danh sách các client đang online
-				int index = list.getSelectedIndex();
+				int index = -1;
+				for (int i = 0; i < table.getRowCount();i++){
+					if (table.getValueAt(i,0).toString().equals(list.getSelectedValue())){
+						index = i;
+						break;
+					}
+				}
 				String ip = table.getValueAt(index, 2).toString();
 				String port = table.getValueAt(index, 3).toString();
 				String userchat = table.getValueAt(index, 0).toString();
@@ -318,7 +333,7 @@ public class UserStatusGUI extends JFrame{
 				DataOutputStream ddd = new DataOutputStream(s.getOutputStream());
 				ddd.writeUTF(txtusername.getText());
 				ddd.flush();
-				//ddd.close();
+
 				ClientChatThread frm = new ClientChatThread(s, sFile, userchat, fff);
 				frm.start();
 				
@@ -342,7 +357,9 @@ public class UserStatusGUI extends JFrame{
 			list.setModel(tmp);
 
 			for (int i = 0; i < table.getRowCount(); i++){
-				tmp.addElement(table.getValueAt(i, 0).toString());
+				if(!table.getValueAt(i,0).toString().equals(txtusername.getText())){
+					tmp.addElement(table.getValueAt(i, 0).toString());
+				}
 			}
 		}
 		catch(Exception e){

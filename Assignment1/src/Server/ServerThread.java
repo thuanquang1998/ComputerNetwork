@@ -14,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ServerThread extends Thread{
 	private DefaultTableModel table; //chứa danh sách các user
+	private DefaultTableModel tableuseronl;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private ServerForm form;
@@ -25,6 +26,7 @@ public class ServerThread extends Thread{
 		this.ID = socket.getPort();
 		this.table = _server.table;
 		this.form = _server.form;
+		this.tableuseronl = _server.tableuseronl;
 		
 	}
 	private boolean checkUserName(String userName){
@@ -92,13 +94,12 @@ public class ServerThread extends Thread{
 						String pass = doc.getElementsByTagName("PASSWORD").item(0).getTextContent();
 
 						if(checkUserName(userName)){
-							
 							String[] dataRow ={userName,pass,socket.getInetAddress().toString(),""+ID+""};
 							table.addRow(dataRow);
-							form.UpdateJList(table);
+							tableuseronl.addRow(dataRow);
+							form.UpdateJList(tableuseronl);
 							//Gửi thông điệp về Client bằng protocol
 							sendMessage(new XMLProtocol().registerAccept(table));
-				
 						}
 						else{
 						
@@ -110,12 +111,10 @@ public class ServerThread extends Thread{
 						if(!doc.getElementsByTagName("STATUS").item(0).getTextContent().equals("ALIVE")){
 							String userName = doc.getElementsByTagName("USER_NAME").item(0).getTextContent();
 							int k = 0;
-							for (int i = 0; i < table.getRowCount(); i++){
-
-								if (table.getValueAt(i,0).toString().equals(userName)){
-									//System.out.println( userName + "\n");
-									table.removeRow(i);
-									form.UpdateJList(table);
+							for (int i = 0; i < tableuseronl.getRowCount(); i++){
+								if (tableuseronl.getValueAt(i,0).toString().equals(userName)){
+									tableuseronl.removeRow(i);
+									form.UpdateJList(tableuseronl);
 									break;
 								}
 							}
@@ -136,11 +135,12 @@ public class ServerThread extends Thread{
 						//Lấy index của userName trên table
 						int row = checkLogin(userName,pass);
 						if(row >= 0){
+							String[] dataRow ={userName,pass,socket.getInetAddress().toString(),""+ID+""};
 							table.setValueAt(ip, row, 2);
 							table.setValueAt(port, row, 3);
+							tableuseronl.addRow(dataRow);
+							form.UpdateJList(tableuseronl);
 							sendMessage(new XMLProtocol().registerAccept(table));
-
-							//sendMessage(new XMLProtocol().listUser(table));
 						}
 						else sendMessage(new XMLProtocol().loginDeny());
 					}

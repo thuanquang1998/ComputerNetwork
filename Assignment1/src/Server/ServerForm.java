@@ -31,6 +31,7 @@ public class ServerForm extends JFrame{
 	private Server server;
 	private File file;
 	protected DefaultTableModel table ;
+	protected DefaultTableModel tableuseronl ;
 	JList<String> list;
 	JScrollPane scrollPane;
 
@@ -66,9 +67,15 @@ public class ServerForm extends JFrame{
 		table.addColumn("pass");
 		table.addColumn("ip");
 		table.addColumn("port");
+
+		tableuseronl = new DefaultTableModel();
+		tableuseronl.addColumn("username");
+		tableuseronl.addColumn("pass");
+		tableuseronl.addColumn("ip");
+		tableuseronl.addColumn("port");
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 600);
+		frame.setBounds(100, 100, 508, 393);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		SpringLayout springLayout = new SpringLayout();
 		frame.getContentPane().setLayout(springLayout);
@@ -163,6 +170,19 @@ public class ServerForm extends JFrame{
 		springLayout.putConstraint(SpringLayout.SOUTH, txtArea, 200, SpringLayout.SOUTH, lblDatafile);
 		springLayout.putConstraint(SpringLayout.EAST, txtArea, -100, SpringLayout.EAST, btnStart);
 		frame.getContentPane().add(txtArea);
+
+		JLabel Show_data = new JLabel("Show data");
+		springLayout.putConstraint(SpringLayout.NORTH, Show_data,-20 , SpringLayout.NORTH, txtArea);
+		springLayout.putConstraint(SpringLayout.WEST, Show_data, 10, SpringLayout.WEST, txtArea);
+		lblServer.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		frame.getContentPane().add(Show_data);
+
+		JLabel listuser_onl =  new JLabel("User Online");
+		springLayout.putConstraint(SpringLayout.SOUTH, listuser_onl, 35, SpringLayout.SOUTH, btnStart);
+		springLayout.putConstraint(SpringLayout.EAST, listuser_onl, -50, SpringLayout.EAST, frame.getContentPane());
+		lblServer.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		frame.getContentPane().add(listuser_onl);
+
 
         scrollPane = new JScrollPane();
         springLayout.putConstraint(SpringLayout.NORTH, scrollPane, -150, SpringLayout.SOUTH, txtArea);

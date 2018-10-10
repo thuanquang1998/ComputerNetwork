@@ -6,6 +6,7 @@ import java.net.*;
 
 public class Server implements Runnable{
 	protected DefaultTableModel table;
+	protected DefaultTableModel tableuseronl;
 	protected ServerForm form;
 	private ServerSocket server;
 	private Thread thread = null;
@@ -15,6 +16,7 @@ public class Server implements Runnable{
 	public Server(ServerForm form){
 		this.form = form;
 		this.table= form.table;
+		this.tableuseronl = form.tableuseronl;
 		try{
 			server = new ServerSocket(port);
 			//Lấy IP máy
@@ -62,7 +64,7 @@ public class Server implements Runnable{
 	public void run(){
 		while(thread != null){
 			try{
-				form.txtArea.append("\nWaiting for a client.....");
+				form.txtArea.append("\nWaiting for a client.....\n");
 				addThread(server.accept());
 			}
 			catch(Exception e){
