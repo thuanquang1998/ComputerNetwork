@@ -326,6 +326,7 @@ public class UserStatusGUI extends JFrame{
 				String ip = table.getValueAt(index, 2).toString();
 				String port = table.getValueAt(index, 3).toString();
 				String userchat = table.getValueAt(index, 0).toString();
+				//System.out.println(userchat +"\n");
 				//Chat to client, that client is server
 				
 				Socket s = new Socket(ip.substring(1),  Integer.parseInt(port) + 1);
