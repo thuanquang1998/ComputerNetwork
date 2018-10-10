@@ -31,7 +31,6 @@ public class ServerForm extends JFrame{
 	private Server server;
 	private File file;
 	protected DefaultTableModel table ;
-    protected DefaultTableModel tableonl ;
 	JList<String> list;
 	JScrollPane scrollPane;
 
@@ -185,12 +184,21 @@ public class ServerForm extends JFrame{
 	}
 	public void UpdateJList(DefaultTableModel ta){
 		try{
+			try{
+				DefaultListModel<String> tb = (DefaultListModel<String>) list.getModel();
+				tb.removeAllElements();
+			}catch(Exception e){}
+
 			DefaultListModel<String> tmp = new DefaultListModel<String>();
 
 			list.setModel(tmp);
+			if (ta.getRowCount()==0){
+				tmp.addElement("0");
+			}else{
+				for (int i = 0; i < ta.getRowCount(); i++){
 
-			for (int i = 0; i < ta.getRowCount(); i++){
-				tmp.addElement(ta.getValueAt(i, 0).toString());
+					tmp.addElement(ta.getValueAt(i, 0).toString());
+				}
 			}
 		}
 		catch(Exception e){

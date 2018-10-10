@@ -14,7 +14,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ServerThread extends Thread{
 	private DefaultTableModel table; //chứa danh sách các user
-	private DefaultTableModel tableonl;
 	private DataInputStream input;
 	private DataOutputStream output;
 	private ServerForm form;
@@ -26,7 +25,6 @@ public class ServerThread extends Thread{
 		this.ID = socket.getPort();
 		this.table = _server.table;
 		this.form = _server.form;
-		this.tableonl = _server.tableonl;
 		
 	}
 	private boolean checkUserName(String userName){
@@ -86,7 +84,6 @@ public class ServerThread extends Thread{
 				//lấy thông điệp từ client
 				String message = input.readUTF();
 				long end = System.currentTimeMillis();
-			//	System.out.println(message);
 				if(message!=null){
 					Document doc = docBuilder.parse(new InputSource(new StringReader(message)));
 					doc.getDocumentElement().normalize();
@@ -98,9 +95,7 @@ public class ServerThread extends Thread{
 							
 							String[] dataRow ={userName,pass,socket.getInetAddress().toString(),""+ID+""};
 							table.addRow(dataRow);
-							//tableonl.addRow(dataRow);
-
-							//form.UpdateJList(tableonl);
+							form.UpdateJList(table);
 							//Gửi thông điệp về Client bằng protocol
 							sendMessage(new XMLProtocol().registerAccept(table));
 				
@@ -115,9 +110,12 @@ public class ServerThread extends Thread{
 						if(!doc.getElementsByTagName("STATUS").item(0).getTextContent().equals("ALIVE")){
 							String userName = doc.getElementsByTagName("USER_NAME").item(0).getTextContent();
 							int k = 0;
-							for (int i = 0; i < tableonl.getRowCount(); i++){
-								if (tableonl.getValueAt(i,1) == userName){
-									tableonl.removeRow(i);
+							for (int i = 0; i < table.getRowCount(); i++){
+
+								if (table.getValueAt(i,0).toString().equals(userName)){
+									//System.out.println( userName + "\n");
+									table.removeRow(i);
+									form.UpdateJList(table);
 									break;
 								}
 							}

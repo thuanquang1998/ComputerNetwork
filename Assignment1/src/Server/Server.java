@@ -6,7 +6,6 @@ import java.net.*;
 
 public class Server implements Runnable{
 	protected DefaultTableModel table;
-	protected DefaultTableModel tableonl;
 	protected ServerForm form;
 	private ServerSocket server;
 	private Thread thread = null;
@@ -16,7 +15,6 @@ public class Server implements Runnable{
 	public Server(ServerForm form){
 		this.form = form;
 		this.table= form.table;
-		this.tableonl = form.tableonl;
 		try{
 			server = new ServerSocket(port);
 			//Lấy IP máy

@@ -66,7 +66,7 @@ public class UserStatusGUI extends JFrame{
 		getContentPane().add(lblHostPort);
 		
 		txthostport = new JTextField();
-		txthostport.setText("6696");
+		txthostport.setText("6996");
 		springLayout.putConstraint(SpringLayout.WEST, txthostport, 6, SpringLayout.EAST, lblHostPort);
 		springLayout.putConstraint(SpringLayout.SOUTH, txthostport, 0, SpringLayout.SOUTH, lblHostName);
 		getContentPane().add(txthostport);
@@ -335,15 +335,15 @@ public class UserStatusGUI extends JFrame{
 				tb.removeAllElements();
 			}catch(Exception e){}
 			//JOptionPane.showMessageDialog(null, lstUser);
-		XMLProtocol protocol = new XMLProtocol();
-		table = protocol.parseString(lstUser);
-		DefaultListModel<String> tmp = new DefaultListModel<String>();
-		
-		list.setModel(tmp);
-		
-		for (int i = 0; i < table.getRowCount(); i++){
-			tmp.addElement(table.getValueAt(i, 0).toString());
-		}
+			XMLProtocol protocol = new XMLProtocol();
+			table = protocol.parseString(lstUser);
+			DefaultListModel<String> tmp = new DefaultListModel<String>();
+
+			list.setModel(tmp);
+
+			for (int i = 0; i < table.getRowCount(); i++){
+				tmp.addElement(table.getValueAt(i, 0).toString());
+			}
 		}
 		catch(Exception e){
 			System.out.println("Cann't take list user");
