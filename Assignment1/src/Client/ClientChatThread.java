@@ -21,9 +21,10 @@ public class ClientChatThread implements Runnable{
 			DataInputStream dip = new DataInputStream(socket.getInputStream());
 			String aod = dip.readUTF();
 			XMLProtocol proto = new XMLProtocol();
-			
+			//Xét messenger có là chấp nhận chat không
 			if (!aod.equals(proto.chatDeny())){
 				ClientGUI client = new ClientGUI(frmStt);
+				//thiết lập liên kết với user còn lại có tên là userchat
 				client.connect(socket,sFile, userChat);
 				client.setVisible(true);
 				client.setTitle("Chat with: " + userChat);

@@ -216,7 +216,6 @@ public class ServerForm extends JFrame{
 				tmp.addElement("0");
 			}else{
 				for (int i = 0; i < ta.getRowCount(); i++){
-
 					tmp.addElement(ta.getValueAt(i, 0).toString());
 				}
 			}

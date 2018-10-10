@@ -220,6 +220,7 @@ public class UserStatusGUI extends JFrame{
 				if (!lstUser.equals(protocol.registerDeny()) && !lstUser.equals(protocol.loginDeny())){
 					
 					UpdateJList(lstUser);
+
 					//Create listenner to accept other chat
 					
 					roleServer = new SocketPeer(socket.getLocalPort() + 1, fff);
@@ -317,8 +318,9 @@ public class UserStatusGUI extends JFrame{
 			try{
 				//chọn client trong danh sách các client đang online
 				int index = -1;
+				String ChoseUser = list.getSelectedValue();
 				for (int i = 0; i < table.getRowCount();i++){
-					if (table.getValueAt(i,0).toString().equals(list.getSelectedValue())){
+					if (table.getValueAt(i,0).toString().equals(ChoseUser)){
 						index = i;
 						break;
 					}
@@ -326,12 +328,15 @@ public class UserStatusGUI extends JFrame{
 				String ip = table.getValueAt(index, 2).toString();
 				String port = table.getValueAt(index, 3).toString();
 				String userchat = table.getValueAt(index, 0).toString();
-				//System.out.println(userchat +"\n");
+
 				//Chat to client, that client is server
 				
 				Socket s = new Socket(ip.substring(1),  Integer.parseInt(port) + 1);
+				System.out.println("111"+"/n");
 				Socket sFile = new Socket(ip.substring(1),  Integer.parseInt(port) + 4);
+				System.out.println("222"+"/n");
 				DataOutputStream ddd = new DataOutputStream(s.getOutputStream());
+				System.out.println("333"+"/n");
 				ddd.writeUTF(txtusername.getText());
 				ddd.flush();
 

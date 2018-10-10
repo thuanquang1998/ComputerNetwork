@@ -16,7 +16,7 @@ public class SocketPeer implements Runnable{
 		serverFile = new ServerSocket(port + 3);
 		this.port = port;
 		}catch(Exception e){
-			System.out.print("socket perr ham tao\n"+e.getMessage());
+			System.out.print("socket peer ham tao\n"+e.getMessage());
 		}
 		this.frmstt = frmStt;
 	}
